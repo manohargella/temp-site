@@ -3,8 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manohar Gella</title>
+    <title>Manohar Gella | Redesigned</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
+        /* ========================================
+        CSS Custom Properties (Theme Variables)
+        ========================================
+        */
+        :root {
+            --font-main: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            
+            --clr-bg: #111827; /* Dark blue-gray */
+            --clr-aurora: #7c3aed; /* Vibrant purple */
+            --clr-card: rgba(31, 41, 55, 0.5); /* Semi-transparent dark gray */
+            --clr-card-border: rgba(255, 255, 255, 0.1);
+            --clr-text-light: #f9fafb; /* Off-white */
+            --clr-text-dark: #9ca3af; /* Muted gray */
+            --clr-accent: #38bdf8; /* Bright blue */
+            
+            --border-radius: 24px;
+            --card-padding: 40px;
+        }
+
+        /* ========================================
+        Base & Body Styles
+        ========================================
+        */
         * {
             margin: 0;
             padding: 0;
@@ -12,150 +40,391 @@
         }
 
         body {
+            font-family: var(--font-main);
+            background-color: var(--clr-bg);
+            color: var(--clr-text-light);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #000000;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            overflow: hidden; /* Prevents scrollbars from aurora effect */
+            position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
 
-        .container {
+        /* Animated Aurora Background Effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--clr-aurora), transparent 60%);
+            transform: translate(-50%, -50%);
+            opacity: 0.15;
+            filter: blur(100px);
+            animation: animateAurora 15s infinite linear;
+            z-index: -1;
+            will-change: transform;
+        }
+
+        @keyframes animateAurora {
+            0% { transform: translate(-50%, -50%) rotate(0deg) scale(1.0); }
+            50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.2); }
+            100% { transform: translate(-50%, -50%) rotate(360deg) scale(1.0); }
+        }
+
+        /* ========================================
+        Profile Card Styles
+        ========================================
+        */
+        .profile-card {
             position: relative;
+            background: var(--clr-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--clr-card-border);
+            border-radius: var(--border-radius);
+            padding: var(--card-padding);
             text-align: center;
-            padding: 40px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            animation: fadeIn 1s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        /* Interactive Glare Effect */
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: var(--mouse-y, 50%);
+            left: var(--mouse-x, 50%);
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent 70%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .profile-card:hover::before {
+            opacity: 1;
+        }
+
+        /* ========================================
+        Card Content Styles
+        ========================================
+        */
+        .profile-image-wrapper {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            border: 2px solid var(--clr-accent);
+            padding: 4px;
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-image-wrapper:hover {
+            transform: scale(1.05);
+        }
+
+        .profile-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
 
         .name {
-            font-size: clamp(2.5rem, 8vw, 6rem);
-            font-weight: 300;
-            letter-spacing: 0.15em;
-            background: linear-gradient(
-                135deg,
-                #ffffff,
-                #e0e0e0,
-                #00d4ff,
-                #0099ff
-            );
-            background-size: 200% 200%;
+            font-size: 2.25rem; /* 36px */
+            font-weight: 600;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--clr-text-light), var(--clr-text-dark));
             -webkit-background-clip: text;
             background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: subtleGradient 6s ease infinite;
-            filter: drop-shadow(0 0 30px rgba(0, 180, 255, 0.3));
-            position: relative;
-            z-index: 2;
+            color: transparent;
+        }
+
+        .title {
+            font-size: 1rem; /* 16px */
+            font-weight: 300;
+            color: var(--clr-text-dark);
             margin-bottom: 30px;
         }
 
-        @keyframes subtleGradient {
-            0%, 100% {
-                background-position: 0% 50%;
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--clr-text-dark);
+            transition: all 0.3s ease;
+            border: 1px solid var(--clr-card-border);
+        }
+
+        .social-icon:hover,
+        .social-icon:focus-visible {
+            color: var(--clr-text-light);
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 0 15px var(--clr-accent);
+            outline: none;
+        }
+        
+        .social-icon:focus-visible {
+             box-shadow: 0 0 0 2px var(--clr-bg), 0 0 0 4px var(--clr-accent);
+        }
+
+        .social-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* ========================================
+        Responsive Design
+        ========================================
+        */
+        @media (max-width: 480px) {
+            :root {
+                --card-padding: 25px;
             }
-            50% {
-                background-position: 100% 50%;
+            
+            body {
+                padding: 15px;
+                overflow: auto; /* Allow scrolling on mobile */
             }
-        }
-
-        .note {
-            font-size: clamp(0.65rem, 1.5vw, 0.9rem);
-            font-weight: 400;
-            letter-spacing: 0.25em;
-            color: #00d4ff;
-            text-transform: uppercase;
-            opacity: 0.7;
-            position: relative;
-        }
-
-        .note::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: -15px;
-            transform: translateX(-50%);
-            width: 40px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
-        }
-
-        .bg-subtle {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(
-                ellipse at center,
-                rgba(0, 100, 180, 0.05) 0%,
-                rgba(0, 0, 0, 1) 70%
-            );
-            z-index: 0;
-        }
-
-        .grid-line {
-            position: fixed;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(0, 180, 255, 0.1),
-                transparent
-            );
-            top: 50%;
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 0.3;
+            
+            .profile-card {
+                max-width: 100%;
+                margin: 0 auto;
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
             }
-            50% {
-                opacity: 0.6;
-            }
-        }
-
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
+            
+            .profile-image-wrapper {
+                width: 90px;
+                height: 90px;
+                margin-bottom: 20px;
             }
             
             .name {
-                letter-spacing: 0.1em;
+                font-size: 1.75rem; /* 28px */
+                margin-bottom: 6px;
+            }
+            
+            .title {
+                font-size: 0.875rem; /* 14px */
+                margin-bottom: 25px;
+            }
+            
+            .social-links {
+                gap: 15px;
+            }
+            
+            .social-icon {
+                width: 42px;
+                height: 42px;
+            }
+            
+            .social-icon svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 360px) {
+            :root {
+                --card-padding: 20px;
+            }
+            
+            .profile-image-wrapper {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .name {
+                font-size: 1.5rem; /* 24px */
+            }
+            
+            .title {
+                font-size: 0.8rem; /* 13px */
+            }
+            
+            .social-links {
+                gap: 12px;
+            }
+            
+            .social-icon {
+                width: 38px;
+                height: 38px;
+            }
+            
+            .social-icon svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+        
+        /* Landscape orientation on mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+            body {
+                padding: 10px;
+            }
+            
+            .profile-card {
+                max-width: 350px;
+            }
+            
+            .profile-image-wrapper {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 15px;
+            }
+            
+            .name {
+                font-size: 1.5rem;
+                margin-bottom: 5px;
+            }
+            
+            .title {
+                font-size: 0.8rem;
                 margin-bottom: 20px;
             }
-
-            .note::before {
-                top: -10px;
-                width: 30px;
+        }
+        
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            body::before {
+                opacity: 0.08; /* Reduce aurora intensity on mobile for better performance */
+                filter: blur(80px);
+            }
+            
+            .profile-card:hover::before {
+                opacity: 0; /* Disable glare effect on touch devices */
+            }
+            
+            .social-icon:hover {
+                transform: none; /* Disable hover effects on touch devices */
+            }
+            
+            .profile-image-wrapper:hover {
+                transform: none; /* Disable hover effects on touch devices */
             }
         }
     </style>
 </head>
 <body>
-    <div class="bg-subtle"></div>
-    <div class="grid-line"></div>
-    <div class="container">
-        <h1 class="name">MANOHAR GELLA</h1>
-        <p class="note">Deployment in Production</p>
-    </div>
+    
+    <main class="profile-card">
+        
+        <div class="profile-image-wrapper">
+            <img src="src/as.jpg" alt="Manohar Gella">
+        </div>
+        
+        <h1 class="name">Manohar Gella</h1>
+        <p class="title">Computer Science UnderGrad</p>
+        
+        <div class="social-links">
+            <a href="https://github.com/manohargella" class="social-icon" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+            </a>
+            
+            <a href="https://www.linkedin.com/in/manohar-gella-2926bb24b/" class="social-icon" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+            </a>
+            
+            <a href="https://x.com/imanohargella" class="social-icon" aria-label="X (formerly Twitter)" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+            </a>
+        </div>
+    </main>
 
     <script>
-        // Subtle mouse parallax effect (desktop only)
-        if (window.innerWidth > 768) {
-            document.addEventListener('mousemove', (e) => {
-                const name = document.querySelector('.name');
-                const note = document.querySelector('.note');
-                
-                const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-                const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-                
-                name.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                note.style.transform = `translate(${moveX * 0.5}px, ${moveY * 0.5}px)`;
-            });
+    document.addEventListener('DOMContentLoaded', () => {
+        const profileCard = document.querySelector('.profile-card');
+        let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+        // Function to handle 3D tilt and glare effect
+        function handleInteraction(e) {
+            const rect = profileCard.getBoundingClientRect();
+            
+            // Get client coordinates (works for both mouse and touch)
+            const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+            const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+            
+            if (!clientX || !clientY) return;
+            
+            // Calculate position relative to the card center
+            const x = clientX - rect.left - rect.width / 2;
+            const y = clientY - rect.top - rect.height / 2;
+
+            // Define rotation range (reduced for mobile)
+            const maxRotation = isTouchDevice ? 10 : 20;
+            const rotateX = (y / rect.height) * -maxRotation;
+            const rotateY = (x / rect.width) * maxRotation;
+
+            // Apply 3D tilt transform
+            profileCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            
+            // Update CSS variables for the glare effect position (only on non-touch devices)
+            if (!isTouchDevice) {
+                const mouseX = clientX - rect.left;
+                const mouseY = clientY - rect.top;
+                profileCard.style.setProperty('--mouse-x', `${mouseX}px`);
+                profileCard.style.setProperty('--mouse-y', `${mouseY}px`);
+            }
         }
+
+        // Function to reset the card
+        function resetCard() {
+            profileCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+        }
+
+        // Mouse events (for desktop)
+        if (!isTouchDevice) {
+            profileCard.addEventListener('mousemove', handleInteraction);
+            profileCard.addEventListener('mouseleave', resetCard);
+        }
+
+        // Touch events (for mobile)
+        if (isTouchDevice) {
+            profileCard.addEventListener('touchstart', handleInteraction, { passive: true });
+            profileCard.addEventListener('touchmove', handleInteraction, { passive: true });
+            profileCard.addEventListener('touchend', resetCard);
+        }
+
+        // Add smooth transitions for better mobile experience
+        profileCard.style.transition = 'transform 0.1s ease-out';
+    });
     </script>
 </body>
 </html>
